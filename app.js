@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { signUp } from "./servers/signup.js";
+import { login } from "./servers/login.js";
 
 dotenv.config(); 
 
@@ -19,6 +20,10 @@ async function main() {
 
 app.post("/signup", (req, res) => {
   signUp(req,res)
+});
+
+app.post("/login", (req, res) => {
+  login(req,res)
 });
 
 app.listen(port, () => {

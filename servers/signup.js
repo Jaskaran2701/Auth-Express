@@ -1,5 +1,6 @@
 import { validateEmail } from "../utils/validators.js";
 import { User } from "../schema/user.js";
+import bcrypt from "bcryptjs";
 
 export const signUp = async (req, res) => {
   const { email, password, name } = req.body;
@@ -23,7 +24,8 @@ export const signUp = async (req, res) => {
         .status(409)
         .json({ error: "Password must be of minimum 6 characters" });
     }
-    const newUser = new User({ name, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
     return res
       .status(201)
