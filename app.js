@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { signUp } from "./servers/signup.js";
 import { login } from "./servers/login.js";
+import { verifyToken } from "./middleware/authMiddleware.js";
 
-dotenv.config(); 
+dotenv.config();
 
 mongoose.set("strictQuery", false);
 
@@ -19,11 +20,15 @@ async function main() {
 }
 
 app.post("/signup", (req, res) => {
-  signUp(req,res)
+  signUp(req, res);
 });
 
 app.post("/login", (req, res) => {
-  login(req,res)
+  login(req, res);
+});
+
+app.get("/protected", verifyToken, (req, res) => {
+  res.send("Worked");
 });
 
 app.listen(port, () => {
